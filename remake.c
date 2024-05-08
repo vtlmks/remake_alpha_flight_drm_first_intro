@@ -6,9 +6,9 @@
 #include <loader.h>
 #include <remake.h>
 
-#include "music.h"
-#include "background.h"
-#include "testfont14.h"
+#include "data/music.h"
+#include "data/background.h"
+#include "data/testfont14.h"
 
 #include "resampler.c"
 
