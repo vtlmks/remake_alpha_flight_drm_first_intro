@@ -151,7 +151,6 @@ uint32_t mainloop_callback(struct loader_shared_state *state) {
 			dst[4] = large_copper_bars[i][4];
 			dst[5] = large_copper_bars[i][5];
 			dst[6] = large_copper_bars[i][6];
-			dst[7] = large_copper_bars[i][7];
 			temp_sine_offset += 4;
 		}
 		if((state->frame_number & 0x1) == 0) {
@@ -194,7 +193,6 @@ uint32_t mainloop_callback(struct loader_shared_state *state) {
 			dst[2] = small_copper_bars[i][2];
 			dst[3] = small_copper_bars[i][3];
 			dst[4] = small_copper_bars[i][4];
-			dst[5] = small_copper_bars[i][5];
 			temp_sine_offset += 3;
 		}
 		if((state->frame_number % 3) == 0) {
