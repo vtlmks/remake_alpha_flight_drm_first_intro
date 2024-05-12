@@ -16,7 +16,8 @@
 
 
 uint32_t copper_blue_stripes_start_index = 0;
-uint32_t copper_blue_stripes[] = {
+__attribute__((aligned(64)))
+static uint32_t copper_blue_stripes[] = {
 	0x0000ff00, 0x000000ff, 0x0000ee00, 0x000000ff, 0x0000dd00, 0x000000ff, 0x0000cc00,
 	0x000000ff, 0x0000bb00, 0x000000ff, 0x0000aa00, 0x000000ff, 0x00009900, 0x000000ff,
 	0x00008800, 0x000000ff, 0x00007700, 0x000000ff, 0x00006600, 0x000000ff, 0x00005500,
@@ -25,7 +26,8 @@ uint32_t copper_blue_stripes[] = {
 };
 
 uint32_t large_copper_bar_sine_offset = 0;
-uint32_t large_copper_bars[7][7] = {		// 7 color bars, 5 pixels high each
+__attribute__((aligned(64)))
+static uint32_t large_copper_bars[7][7] = {		// 7 color bars, 5 pixels high each
 	{ 0x0055aaff, 0x0088ddff, 0x00aaffff, 0x0088ddff, 0x0066aaff, 0x004477ff, 0x002244ff, },
 	{ 0x008888ff, 0x00ccbbff, 0x00ffddff, 0x00ddbbff, 0x00aa88ff, 0x007755ff, 0x003322ff, },
 	{ 0x008800ff, 0x00cc00ff, 0x00ff00ff, 0x00dd00ff, 0x00aa00ff, 0x007700ff, 0x003300ff, },
@@ -36,7 +38,8 @@ uint32_t large_copper_bars[7][7] = {		// 7 color bars, 5 pixels high each
 };
 
 uint32_t small_copper_bars_sine_offset = 0;
-uint32_t small_copper_bars[7][5] = {		// 7 copper bars, 5 pixels high each
+__attribute__((aligned(64)))
+static uint32_t small_copper_bars[7][5] = {		// 7 copper bars, 5 pixels high each
 	{ 0x0077ccff, 0x00aaffff, 0x0088ddff, 0x0066aaff, 0x004466ff, },
 	{ 0x00ccbbff, 0x00ffddff, 0x00ccbbff, 0x008877ff, 0x004433ff, },
 	{ 0x00cc00ff, 0x00ff00ff, 0x00cc00ff, 0x008800ff, 0x004400ff, },
@@ -46,7 +49,8 @@ uint32_t small_copper_bars[7][5] = {		// 7 copper bars, 5 pixels high each
 	{ 0xccccccff, 0xffffffff, 0xccccccff, 0x888888ff, 0x444444ff, },
 };
 
-uint32_t scroll_colors[85] = {
+__attribute__((aligned(64)))
+static uint32_t scroll_colors[85] = {
 	0x0000ffff, 0x222222ff, 0x0033ffff, 0x444444ff, 0x0055ffff, 0x666666ff, 0x0077ffff, 0x888888ff,
 	0x0099ffff, 0xaaaaaaff, 0x00bbffff, 0xccccccff, 0x00ddffff, 0xeeeeeeff, 0x00ffffff, 0xffffffff,
 	0x00ffddff, 0xeeeeeeff, 0x00ffbbff, 0xddddddff, 0x00ff99ff, 0xaaaaaaff, 0x00ff77ff, 0x888888ff,
@@ -60,7 +64,8 @@ uint32_t scroll_colors[85] = {
 	0x5500ffff, 0x005555ff, 0x3300ffff, 0x004444ff, 0x0000ffff,
 };
 
-uint8_t half_sine_bounce[] = {
+__attribute__((aligned(64)))
+static uint8_t half_sine_bounce[] = {
 	0x00, 0x00, 0x00, 0x02, 0x02, 0x04, 0x04, 0x06, 0x08, 0x0a, 0x0c, 0x0e, 0x12, 0x14, 0x18, 0x1a,
 	0x1e, 0x22, 0x26, 0x28, 0x2e, 0x32, 0x36, 0x3c, 0x40, 0x46, 0x4c, 0x52, 0x58, 0x5e, 0x64, 0x6a,
 	0x70, 0x78, 0x80, 0x86, 0x8e, 0x96, 0x9e, 0xa6, 0x9e, 0x96, 0x8e, 0x86, 0x80, 0x78, 0x70, 0x6a,
@@ -68,14 +73,16 @@ uint8_t half_sine_bounce[] = {
 	0x18, 0x14, 0x12, 0x0e, 0x0c, 0x0a, 0x08, 0x06, 0x04, 0x04, 0x02, 0x02, 0x00, 0x00, 0x00,
 };
 
-uint8_t full_sine[] = {
+__attribute__((aligned(64)))
+static uint8_t full_sine[] = {
 	0x38, 0x40, 0x46, 0x4c, 0x50, 0x56, 0x5a, 0x60, 0x64, 0x68, 0x6a, 0x6e, 0x70, 0x72,
 	0x72, 0x72, 0x70, 0x6e, 0x6a, 0x68, 0x64, 0x60, 0x5a, 0x56, 0x50, 0x4c, 0x46, 0x40,
 	0x38, 0x32, 0x2c, 0x26,	0x22, 0x1c, 0x16, 0x12, 0x0e, 0x0a, 0x08, 0x04, 0x02, 0x00,
 	0x00, 0x00, 0x02, 0x04, 0x08, 0x0a, 0x0e, 0x12, 0x16, 0x1c, 0x22, 0x26, 0x2c, 0x32,
 };
 
-char *scroll_text = {
+__attribute__((aligned(64)))
+static char *scroll_text = {
 	"     THE ALPHA FLIGHT AMIGA SECTION BECOMES BIGGER . THIS TIME "
 	"IT'S DOCTOR MABUSE, THE MASTER OF THE COLOR BARS !! AFTER  A LOT"
 	" OF PROBLEMS I CAN FINALLY PRESENT YOU MY FIRST AMIGA INTRO . "
@@ -101,15 +108,19 @@ char *scroll_text = {
 	"(C)  DR. MABUSE INDUSTRIES                     ^"
 };
 
-
+__attribute__((aligned(64)))
 uint32_t copper_background[229];
+
+__attribute__((aligned(64)))
 uint32_t copper_behind_image[BACKGROUND_HEIGHT];
+
 uint32_t bars_on_top_of_eachother_sine_offset = 0;
 uint32_t bars_on_top_of_eachother[87];
 
+__attribute__((aligned(64)))
 uint8_t scroll_buffer[(320+16) * 14];
 
-int32_t mainloop_callback(struct loader_shared_state *state) {
+uint32_t mainloop_callback(struct loader_shared_state *state) {
 	struct remake *remake = (struct remake *)state->remake_userdata;
 	memset(copper_background, 0, sizeof(copper_background));
 	memset(copper_behind_image, 0, sizeof(copper_behind_image));
@@ -133,9 +144,14 @@ int32_t mainloop_callback(struct loader_shared_state *state) {
 		uint32_t temp_sine_offset = large_copper_bar_sine_offset;
 		for(uint32_t i = 0; i < 7; ++i) {
 			uint32_t *dst = copper_background + 139 + (half_sine_bounce[temp_sine_offset % ARRAY_SIZE(half_sine_bounce)] >> 1);
-			for(uint32_t y = 0; y < 7; ++y) {
-				dst[y] = large_copper_bars[i][y];
-			}
+			dst[0] = large_copper_bars[i][0];
+			dst[1] = large_copper_bars[i][1];
+			dst[2] = large_copper_bars[i][2];
+			dst[3] = large_copper_bars[i][3];
+			dst[4] = large_copper_bars[i][4];
+			dst[5] = large_copper_bars[i][5];
+			dst[6] = large_copper_bars[i][6];
+			dst[7] = large_copper_bars[i][7];
 			temp_sine_offset += 4;
 		}
 		if((state->frame_number & 0x1) == 0) {
@@ -173,9 +189,12 @@ int32_t mainloop_callback(struct loader_shared_state *state) {
 		uint32_t temp_sine_offset = small_copper_bars_sine_offset;
 		for(uint32_t i = 0; i < 7; ++i) {
 			uint32_t *dst = copper_behind_image + 51 + (full_sine[temp_sine_offset % ARRAY_SIZE(full_sine)] >>1);
-			for(uint32_t y = 0; y < 5; ++y) {
-				dst[y] = small_copper_bars[i][y];
-			}
+			dst[0] = small_copper_bars[i][0];
+			dst[1] = small_copper_bars[i][1];
+			dst[2] = small_copper_bars[i][2];
+			dst[3] = small_copper_bars[i][3];
+			dst[4] = small_copper_bars[i][4];
+			dst[5] = small_copper_bars[i][5];
 			temp_sine_offset += 3;
 		}
 		if((state->frame_number % 3) == 0) {
