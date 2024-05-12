@@ -15,6 +15,14 @@
 #define ARRAY_SIZE(_Array) (sizeof(_Array) / sizeof(_Array[0]))
 
 
+int16_t *resampled_music_data;
+uint32_t outsize;
+
+struct remake_state {
+	struct loader_shared_state *shared;
+};
+
+
 uint32_t copper_blue_stripes_start_index = 0;
 __attribute__((aligned(64)))
 static uint32_t copper_blue_stripes[] = {
@@ -120,14 +128,13 @@ uint32_t bars_on_top_of_eachother[87];
 __attribute__((aligned(64)))
 uint8_t scroll_buffer[(320+16) * 14];
 
-uint32_t mainloop_callback(struct loader_shared_state *state) {
-	struct remake *remake = (struct remake *)state->remake_userdata;
+uint32_t mainloop_callback(struct remake_state *state) {
 	memset(copper_background, 0, sizeof(copper_background));
 	memset(copper_behind_image, 0, sizeof(copper_behind_image));
 
 	{	// clear screen to deep blue
-		uint32_t *dst = state->buffer;
-		for(uint32_t i = 0; i < state->buffer_width*state->buffer_height; ++i) {
+		uint32_t *dst = state->shared->buffer;
+		for(uint32_t i = 0; i < state->shared->buffer_width*state->shared->buffer_height; ++i) {
 			dst[i] = 0x000044ff;
 		}
 	}
@@ -153,7 +160,7 @@ uint32_t mainloop_callback(struct loader_shared_state *state) {
 			dst[6] = large_copper_bars[i][6];
 			temp_sine_offset += 4;
 		}
-		if((state->frame_number & 0x1) == 0) {
+		if((state->shared->frame_number & 0x1) == 0) {
 			large_copper_bar_sine_offset += 1;
 		}
 	}
@@ -162,13 +169,13 @@ uint32_t mainloop_callback(struct loader_shared_state *state) {
 	copper_background[219] = 0x000000ff;	// offset 219 = black line under scroller
 
 	{	// render background copper
-		uint32_t *dst = state->buffer + state->buffer_width;
+		uint32_t *dst = state->shared->buffer + state->shared->buffer_width;
 		for(uint32_t y = 0; y < 229; ++y) {
 			uint32_t line_color = copper_background[y];
-			for(uint32_t x = 0; x < state->buffer_width; ++x) {
+			for(uint32_t x = 0; x < state->shared->buffer_width; ++x) {
 				dst[x] = line_color;
 			}
-			dst += state->buffer_width;
+			dst += state->shared->buffer_width;
 		}
 	}
 
@@ -179,7 +186,7 @@ uint32_t mainloop_callback(struct loader_shared_state *state) {
 		for(uint32_t y = 0; y < 24; ++y) {
 			dst[y] = src[y];
 		}
-		if((state->frame_number % 4) == 0) {
+		if((state->shared->frame_number % 4) == 0) {
 			bars_on_top_of_eachother_sine_offset += 1;
 		}
 	}
@@ -195,13 +202,13 @@ uint32_t mainloop_callback(struct loader_shared_state *state) {
 			dst[4] = small_copper_bars[i][4];
 			temp_sine_offset += 3;
 		}
-		if((state->frame_number % 3) == 0) {
+		if((state->shared->frame_number % 3) == 0) {
 			small_copper_bars_sine_offset += 1;
 		}
 	}
 
 	{	// Draw logo
-		uint32_t *dst = state->buffer + 18*state->buffer_width + ((state->buffer_width-BACKGROUND_WIDTH)>>1);
+		uint32_t *dst = state->shared->buffer + 18 * state->shared->buffer_width + ((state->shared->buffer_width - BACKGROUND_WIDTH) >> 1);
 		uint8_t *src = background_data;
 		for(uint32_t y = 0; y < BACKGROUND_HEIGHT; ++y) {
 			uint32_t line_color = copper_behind_image[y];
@@ -220,7 +227,7 @@ uint32_t mainloop_callback(struct loader_shared_state *state) {
 					} break;
 				}
 			}
-			dst += state->buffer_width;
+			dst += state->shared->buffer_width;
 		}
 	}
 
@@ -258,7 +265,7 @@ uint32_t mainloop_callback(struct loader_shared_state *state) {
 			}
 		}
 
-		uint32_t *dst = state->buffer + 205*state->buffer_width + ((state->buffer_width-320) >> 1);
+		uint32_t *dst = state->shared->buffer + 205 * state->shared->buffer_width + ((state->shared->buffer_width - 320) >> 1);
 		uint8_t *src = scroll_buffer;
 		for(uint32_t y = 0; y < 14; ++y) {
 			uint32_t line_color = scroll_colors[y+1];
@@ -269,12 +276,12 @@ uint32_t mainloop_callback(struct loader_shared_state *state) {
 				}
 			}
 			src += 336;
-			dst += state->buffer_width;
+			dst += state->shared->buffer_width;
 		}
 	}
 
 	{ // Cycle the scroll_colors
-		if((state->frame_number & 0x3) == 0) {
+		if((state->shared->frame_number & 0x3) == 0) {
 			// Cycle down
 			uint32_t first = 0;
 			uint32_t temp = scroll_colors[0];
@@ -299,29 +306,24 @@ uint32_t mainloop_callback(struct loader_shared_state *state) {
 	return 0;
 }
 
-int16_t *resampled_music_data;
-uint32_t outsize;
-
-struct remake  {
-};
-
 void setup(struct loader_shared_state *state) {
-	state->remake_userdata = (struct remake *)calloc(1, sizeof(struct remake));
+	state->remake_state = (struct remake_state *)calloc(1, sizeof(struct remake_state));
+	state->remake_state->shared = state;
+
 	resampled_music_data = resample_audio(music_data, sizeof(music_data), 380, &outsize);
 }
 
 void cleanup(struct loader_shared_state *state) {
-	struct remake *remake = (struct remake *)state->remake_userdata;
-
+	struct remake_state *remake_state = (struct remake_state *)state->remake_state;
+	free(remake_state);
 	free(resampled_music_data);
 }
 
-void key_callback(struct loader_shared_state *state, int key) {
-	struct remake *remake = (struct remake *)state->remake_userdata;
+void key_callback(struct remake_state *state, int key) {
 }
 
-void audio_callback(struct loader_shared_state *state, int16_t *audio_buffer, size_t frames) {
-	struct remake *remake = (struct remake *)state->remake_userdata;
+void audio_callback(struct remake_state *state, int16_t *audio_buffer, size_t frames) {
+
 	static uint32_t audio_sample_count;
 	int16_t *dst = audio_buffer;
 	for(uint32_t i = 0; i < frames; ++i) {
