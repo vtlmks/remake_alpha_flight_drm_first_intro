@@ -303,6 +303,10 @@ uint32_t mainloop_callback(struct remake_state *state) {
 
 	}
 
+	if(state->shared->mouse_button_state[REMAKE_MOUSE_BUTTON_LEFT]) {
+		return 1;
+	}
+
 	return 0;
 }
 
@@ -319,7 +323,7 @@ void cleanup(struct loader_shared_state *state) {
 	free(resampled_music_data);
 }
 
-void key_callback(struct remake_state *state, int key) {
+void key_callback(struct remake_state *state, int key, int action) {
 }
 
 void audio_callback(struct remake_state *state, int16_t *audio_buffer, size_t frames) {
